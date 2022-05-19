@@ -4,7 +4,7 @@
 # Commands
 
 |コマンド|内容|権限|
-|---|---|
+|---|---|---|
 |`/viewinv <保存するプレイヤー名> (オプション: ページ数)`|指定ユーザーの保存ファイルを確認|inventorysaver.admin|
 |`/loadinv <復元対象プレイヤー名> <ファイルパス, ユーザー名/保存ファイル.yml>`|指定したユーザーのインベントリを復元|inventorysaver.admin|
 |`/saveinv`|オンラインプレイヤーのインベントリを保存|inventorysaver.admin|
