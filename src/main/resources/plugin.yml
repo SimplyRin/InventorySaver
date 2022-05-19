@@ -1,0 +1,11 @@
+main: net.simplyrin.inventorysaver.InventorySaver
+name: InventorySaver
+version: 2.0
+api-version: 1.13
+commands:
+  loadinventory:
+  loadinv:
+  saveinventory:
+  saveinv:
+  viewinventory:
+  viewinv:
