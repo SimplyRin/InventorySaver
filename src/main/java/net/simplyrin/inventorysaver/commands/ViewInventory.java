@@ -119,7 +119,7 @@ public class ViewInventory implements CommandExecutor, TabCompleter {
 			}
 		}
 
-		sender.sendMessage("§cUsage: /" + cmd.getName() + " directory (page, optional)");
+		sender.sendMessage("§cUsage: /" + cmd.getName() + " <username> (page, optional)");
 		return true;
 	}
 	
