@@ -114,7 +114,7 @@ public class ViewInventory implements CommandExecutor, TabCompleter {
 					}
 				}
 				
-				this.openDirectory(player, args[0], this.readZipFile(file), null, page);
+				this.openDirectory(player, args[0].toLowerCase(), this.readZipFile(file), null, page);
 				return true;
 			}
 		}
@@ -161,6 +161,8 @@ public class ViewInventory implements CommandExecutor, TabCompleter {
 			cacheId = UUID.randomUUID().toString().split("-")[0];
 			this.map.put(cacheId, files);
 		}
+		
+		directoryName = directoryName.toLowerCase();
 		
 		String uniqueId = this.instance.getPlayerConfig().getString("name." + directoryName);
 		directoryName = this.instance.getPlayerConfig().getString("uuid." + uniqueId, directoryName);
