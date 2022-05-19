@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -60,10 +61,7 @@ public class InventoryManager {
 
 	public void saveOnlinePlayersInventory() {
 		for (Player player : this.instance.getServer().getOnlinePlayers()) {
-			try {
-				this.saveInventory(player);
-			} catch (Exception e) {
-			}
+			this.saveInventory(player);
 		}
 	}
 
@@ -75,7 +73,7 @@ public class InventoryManager {
 		File players = new File(this.instance.getDataFolder(), "players");
 		File folder = new File(players, player.getUniqueId().toString());
 		folder.mkdirs();
-		
+
 		File location = new File(folder, new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date()) + ".yml");
 		
 		ItemStack[] armor = player.getInventory().getArmorContents();
@@ -100,6 +98,30 @@ public class InventoryManager {
 			}
 		}
 
+		File lastModified = null;
+		for (File file : folder.listFiles()) {
+			if (!file.getName().endsWith(".yml")) {
+				continue;
+			}
+			
+			if (lastModified == null) {
+				lastModified = file;
+			}
+			
+			if (lastModified.lastModified() <= file.lastModified()) {
+				lastModified = file;
+			}
+		}
+
+		if (lastModified != null) {
+			FileConfiguration lastConfig = YamlConfiguration.loadConfiguration(lastModified);
+			InventoryData invData = this.instance.getInventoryManager().getInventoryData(lastConfig);
+			
+			if (Arrays.equals(invData.getArmor(), armor) && Arrays.equals(invData.getContent(), contents)) {
+				return;
+			}
+		}
+			
 		FileConfiguration config = YamlConfiguration.loadConfiguration(location);
 
 		config.set("Exp.Exp", (double) player.getExp());
@@ -175,17 +197,18 @@ public class InventoryManager {
 			
 		}
 		
+		return this.getInventoryData(config);
+	}
+	
+	public InventoryData getInventoryData(FileConfiguration config) {
 		double exp = config.getDouble("Exp.Exp", -1);
 		int level = config.getInt("Exp.Level", -1);
 		
 		ItemStack[] armor = ((List<ItemStack>) config.get("Inventory.Armor")).toArray(new ItemStack[0]);
-		
 		ItemStack[] content = ((List<ItemStack>) config.get("Inventory.Content")).toArray(new ItemStack[0]);
-		
 		ItemStack offhand = config.getItemStack("Inventory.Offhand");
 		
 		return new InventoryData(exp, level, armor, content, offhand);
-		
 	}
 
 }
