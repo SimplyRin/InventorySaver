@@ -110,6 +110,7 @@ public class InventorySaver extends JavaPlugin {
 		this.getLogger().info("Zipping previous day's data into a ZIP file...");
 		
 		File players = new File(this.instance.getDataFolder(), "players");
+		players.mkdirs();
 		
 		HashMap<String, InvZip> map = new HashMap<>();
 		String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
