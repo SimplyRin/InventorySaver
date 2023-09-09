@@ -115,6 +115,10 @@ public class InventorySaver extends JavaPlugin {
 		HashMap<String, InvZip> map = new HashMap<>();
 		String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 		
+		if (players.listFiles() == null) {
+			return;
+		}
+		
 		for (File uniqueIdFolder : players.listFiles()) {
 			if (uniqueIdFolder.isFile()) {
 				continue;
